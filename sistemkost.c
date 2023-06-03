@@ -143,7 +143,7 @@ void afterPenghuni (penghuni* prev, int id, int nomor, char namaPenghuni[], int 
         baru->kontainer.biaya = biaya;
         baru->kontainer.sudahBayar = false;
 
-        if (prev->next = NULL) {
+        if (prev->next == NULL) {
             baru->next = NULL;
         } else {
             baru->next = prev->next;
@@ -199,7 +199,7 @@ void delPenghuni(int nomor, list* L) {
     }
 }
 
-int idPertama (list L) {
+penghuni* idPertama (list L) {
     penghuni* bantu = L.first;
     penghuni* after = bantu->next;
 
@@ -242,7 +242,7 @@ void selectionSortId (list* L) {
     (*L).first = sorted;
 }
 
-int kamarPertama (list L) {
+penghuni* kamarPertama (list L) {
     penghuni* bantu = L.first;
     penghuni* after = bantu->next;
 
@@ -290,7 +290,8 @@ void dataPenghuni (list L) {
     if (L.first != NULL) {
         penghuni* bantu = L.first;
         while (bantu != NULL) {
-            printf("\n=================================");            printf("\nKamar %d || Penghuni: %s", bantu->kontainer.nomor, bantu->kontainer.namaPenghuni);
+            printf("\n=================================");
+            printf("\nKamar %d || Penghuni: %s", bantu->kontainer.nomor, bantu->kontainer.namaPenghuni);
             printf("\n\t|| Biaya: Rp %d", bantu->kontainer.biaya);
             bantu = bantu->next;
         }
@@ -307,7 +308,8 @@ void konfirmasiPembayaran(list* L) {
 
     printf("\n==========DATA PENGHUNI==========\n");
     while (data != NULL && cari->kontainer.sudahBayar == false) {
-        printf("\n=================================");        printf("\nKamar %d || Penghuni: %s", data->kontainer.nomor, data->kontainer.namaPenghuni);
+        printf("\n=================================");
+        printf("\nKamar %d || Penghuni: %s", data->kontainer.nomor, data->kontainer.namaPenghuni);
         printf("\n\t|| Biaya: Rp %d", data->kontainer.biaya);
         data = data->next;
     }
@@ -335,14 +337,15 @@ void konfirmasiPembayaran(list* L) {
                 printf("Konfirmasi pembayaran berhasil.\n");
             }
             printf("======================================\n");
-            return cari->kontainer.sudahBayar = true;
-
+            cari->kontainer.sudahBayar = true;
+            return; // Keluar dari fungsi setelah nomor kamar ditemukan
         }
         cari = cari->next;
     }
     printf("Nomor kamar tidak ditemukan.\n");
     printf("=====================================\n");
 }
+
 
 void cetakStruk(list* L) {
     printf("\n==========STRUK PEMBAYARAN==========\n");
