@@ -305,17 +305,18 @@ void konfirmasiPembayaran(list* L) {
     penghuni* cari = (*L).first;
     int nomor, bayar;
     penghuni* data = (*L).first;
-/*
-    printf("\n==========DATA PENGHUNI==========\n");
-    while (data != NULL && cari->kontainer.sudahBayar == false) {
-        printf("\n=================================");
-        printf("\nKamar %d || Penghuni: %s", data->kontainer.nomor, data->kontainer.namaPenghuni);
-        printf("\n\t|| Biaya: Rp %d", data->kontainer.biaya);
+
+    printf("\n==========DATA TAGIHAN==========\n");
+    while (data != NULL) {
+        if (data->kontainer.sudahBayar == false) {
+            printf("\n=================================");
+            printf("\nKamar %d || Penghuni: %s", data->kontainer.nomor, data->kontainer.namaPenghuni);
+            printf("\n\t|| Biaya: Rp %d", data->kontainer.biaya);
+        }
         data = data->next;
     }
     printf("\n=================================\n");
-*/
-    dataPenghuni(*L);
+
     printf("\n==========PEMBAYARAN BULANAN==========\n");
     printf("\nMasukkan nomor kamar\t: ");
     scanf("%d", &nomor);
@@ -344,9 +345,8 @@ void konfirmasiPembayaran(list* L) {
         cari = cari->next;
     }
     printf("Nomor kamar tidak ditemukan.\n");
-    printf("=====================================\n");
+    printf("======================================\n");
 }
-
 
 void cetakStruk(list* L) {
     printf("\n==========STRUK PEMBAYARAN==========\n");
@@ -436,7 +436,7 @@ int main () {
                 konfirmasiPembayaran(&L);
                 break;
             case 5:
-                selectionSortId(&L);
+                //selectionSortId(&L);
                 cetakStruk(&L);
                 break;
             case 6:

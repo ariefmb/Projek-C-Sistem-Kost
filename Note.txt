@@ -1,4 +1,1 @@
 NOT SOLVED
-1. Fitur 4 Penagihan masih mencetak data yang sudah bayar.
-Harusnya yang belum bayar saja.
-2. Fitur 3 Belum ada progress
