@@ -46,7 +46,6 @@ int countElement (list L) {
 
 void cariKamar (int jumlahKamar, list* L) {
     printf("\n=====DATA KAMAR KOSONG=====\n");
-    printf("\n =============");
     int awal = 1;
     penghuni* cari = (*L).first;
     int* hash = (int*)calloc((jumlahKamar - awal + 1), sizeof(int));
@@ -58,12 +57,43 @@ void cariKamar (int jumlahKamar, list* L) {
         cari = cari->next;
     }
 
-    for (int i = 0; i < jumlahKamar; i++) {
+    printf("\n");
+    for (int i = 0; i < jumlahKamar/2; i++) {
         if (hash[i] == 0) {
-            printf("\n || Kamar %d ||", awal + i);
+            printf("============");
         }
     }
-    printf("\n =============");
+    printf("\n ||");
+    for (int i = 0; i < jumlahKamar/2; i++) {
+        if (hash[i] == 0) {
+            printf(" Kamar %d ||", awal + i);
+        }
+    }
+    printf("\n");
+    for (int i = 0; i < jumlahKamar/2; i++) {
+        if (hash[i] == 0) {
+            printf("============");
+        }
+    }
+    printf("\n");
+    for (int i = (jumlahKamar/2); i < jumlahKamar; i++) {
+        if (hash[i] == 0) {
+            printf("============");
+        }
+    }
+    printf("\n ||");
+    for (int i = (jumlahKamar/2); i < jumlahKamar; i++) {
+        if (hash[i] == 0) {
+            printf(" Kamar %d ||", awal + i);
+        }
+    }
+    printf("\n");
+    for (int i = (jumlahKamar/2); i < jumlahKamar; i++) {
+        if (hash[i] == 0) {
+            printf("============");
+        }
+    }
+
     free(hash);
 }
 
@@ -281,57 +311,72 @@ void selectionSortKamar (list* L) {
 }
 
 void dataPenghuni (list L) {
-    printf("\n=======DATA PENGHUNI=======\n");
+    printf("\n==========DATA PENGHUNI==========\n");
     if (L.first != NULL) {
         penghuni* bantu = L.first;
         while (bantu != NULL) {
-            printf("\n===========================");
-            printf("\nKamar %d || Penghuni: %s", bantu->kontainer.nomor, bantu->kontainer.namaPenghuni);
+            printf("\n=================================");            printf("\nKamar %d || Penghuni: %s", bantu->kontainer.nomor, bantu->kontainer.namaPenghuni);
             printf("\n\t|| Biaya: Rp %d", bantu->kontainer.biaya);
             bantu = bantu->next;
         }
     } else {
         printf("\nBelum ada penghuni\n");
     }
-    printf("\n===========================\n");
+    printf("\n=================================\n");
 }
 
 void konfirmasiPembayaran(list* L) {
     penghuni* cari = (*L).first;
     int nomor, bayar;
-    printf("\nMasukkan nomor kamar: ");
-    scanf("%d", &nomor);
+    penghuni* data = (*L).first;
 
+    printf("\n==========DATA PENGHUNI==========\n");
+    while (data != NULL && cari->kontainer.sudahBayar == false) {
+        printf("\n=================================");        printf("\nKamar %d || Penghuni: %s", data->kontainer.nomor, data->kontainer.namaPenghuni);
+        printf("\n\t|| Biaya: Rp %d", data->kontainer.biaya);
+        data = data->next;
+    }
+    printf("\n=================================\n");
+
+    printf("\n==========PEMBAYARAN BULANAN==========\n");
+    printf("\nMasukkan nomor kamar\t: ");
+    scanf("%d", &nomor);
     while (cari != NULL) {
         if (cari->kontainer.nomor == nomor) {
-            printf("Masukkan jumlah pembayaran: ");
-            scanf("%d", &cari->kontainer.pembayaran);   // Menyimpan data pembayaran
-            while (cari->kontainer.pembayaran < cari->kontainer.biaya) {
-                printf("Pembayaran kurang Rp %d", cari->kontainer.biaya - cari->kontainer.pembayaran);
-                printf("\n\nMasukkan sisa pembayaran: ");
-                scanf("%d", &bayar);
-                cari->kontainer.pembayaran = cari->kontainer.pembayaran + bayar;
-            }
+            if (cari->kontainer.sudahBayar == true) {
+                printf("Kamar nomor %d sudah membayar.\n", cari->kontainer.nomor);
+            } else {
+                printf("Masukkan jumlah pembayaran: ");
+                scanf("%d", &cari->kontainer.pembayaran);   // Menyimpan data pembayaran
+                while (cari->kontainer.pembayaran < cari->kontainer.biaya) {
+                    printf("Pembayaran kurang Rp %d", cari->kontainer.biaya - cari->kontainer.pembayaran);
+                    printf("\n\nMasukkan sisa pembayaran: ");
+                    scanf("%d", &bayar);
+                    cari->kontainer.pembayaran = cari->kontainer.pembayaran + bayar;
+                }
 
-            // Menghitung kembalian
-            cari->kontainer.kembalian = cari->kontainer.pembayaran - cari->kontainer.biaya;
-            cari->kontainer.sudahBayar = true;
-            printf("Konfirmasi pembayaran berhasil.\n");
-            return;
+                // Menghitung kembalian
+                cari->kontainer.kembalian = cari->kontainer.pembayaran - cari->kontainer.biaya;
+                printf("Konfirmasi pembayaran berhasil.\n");
+            }
+            printf("======================================\n");
+            return cari->kontainer.sudahBayar = true;
+
         }
         cari = cari->next;
     }
     printf("Nomor kamar tidak ditemukan.\n");
+    printf("=====================================\n");
 }
 
 void cetakStruk(list* L) {
-    printf("\n=======STRUK PEMBAYARAN=======\n");
+    printf("\n==========STRUK PEMBAYARAN==========\n");
     if ((*L).first != NULL) {
         penghuni* bantu = (*L).first;
         while (bantu != NULL) {
             if (bantu->kontainer.sudahBayar) {
-                printf("\n=====================================");
-                printf("\nNomor Struk : KOST/%02d/2023", bantu->kontainer.id);
+                printf("\n====================================");
+                printf("\nNomor Struk : KOST/%02d/2023", bantu->kontainer.nomor);
                 printf("\nKamar %d || Penghuni\t: %s", bantu->kontainer.nomor, bantu->kontainer.namaPenghuni);
                 printf("\n\t|| Biaya\t: Rp %d", bantu->kontainer.biaya);
                 printf("\n\t|| Pembayaran\t: Rp %d", bantu->kontainer.pembayaran);   // Menampilkan data pembayaran
@@ -342,7 +387,7 @@ void cetakStruk(list* L) {
     } else {
         printf("\nBelum ada penghuni\n");
     }
-    printf("\n=====================================\n");
+    printf("\n====================================\n");
 }
 
 int main () {
@@ -365,10 +410,9 @@ int main () {
         printf("1. Mencari kamar kosong\n");
         printf("2. Menambahkan pesanan kamar\n");
         printf("3. Menghapus pesanan kamar\n");
-        printf("4. Penagihan untuk penghuni kost\n");
-        printf("5. Konfirmasi pembayaran\n");
-        printf("6. Cetak struk\n");
-        printf("7. Data penghuni\n");
+        printf("4. Penagihan pembayaran\n");
+        printf("5. Cetak struk\n");
+        printf("6. Data penghuni\n");
         printf("0. Keluar\n");
         printf("Pilihan Anda: ");
         scanf("%d", &pilihan);
@@ -410,15 +454,13 @@ int main () {
             }
             case 4:
                 selectionSortId(&L);
-                dataPenghuni(L);
-                break;
-            case 5:
                 konfirmasiPembayaran(&L);
                 break;
-            case 6:
+            case 5:
+                selectionSortId(&L);
                 cetakStruk(&L);
                 break;
-            case 7:
+            case 6:
                 selectionSortKamar(&L);
                 dataPenghuni(L);
                 break;
