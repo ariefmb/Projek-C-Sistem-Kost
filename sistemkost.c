@@ -167,62 +167,37 @@ void addPenghuni (int id, int nomor, char namaPenghuni[], int biaya, list* L) {
     }
 }
 
-void delFirstPenghuni (list* L) {
+void delPenghuni(int nomor, list* L) {
     if ((*L).first != NULL) {
-       penghuni* hapus = (*L).first;
-       if (countElement(*L) == 1) {
-            (*L).first = NULL;
-       } else {
-           (*L).first = (*L).first->next;
-       }
-       hapus->next = NULL;
-       free(hapus);
-    } else {
-        printf("\nTidak ada penghuni\n");
-    }
-}
+        penghuni* hapus = (*L).first;
+        penghuni* prev = NULL;
+        bool found = false;
 
-void delPenghuni (int nomor, list* L) {
-    penghuni* before = (*L).first;
-    penghuni* bantu;
-    while (before != NULL && before->kontainer.nomor != nomor) {
-        before = before->next;
-    }
-
-    if (before == (*L).first) {
-        delFirstPenghuni(&L);
-    }
-
-    else if (before != NULL && before->next != NULL) {
-        penghuni *kamar = before->next;
-        if (kamar->next == NULL) {
-            before->next = NULL;
-        } else {
-            before->next = kamar->next;
+        while (hapus != NULL && !found) {
+            if (hapus->kontainer.nomor == nomor) {
+                found = true;
+            } else {
+                prev = hapus;
+                hapus = hapus->next;
+            }
         }
-        kamar->next = NULL;
-        free(kamar);
+
+        if (found) {
+            if (prev == NULL) {
+                (*L).first = hapus->next;
+            } else {
+                prev->next = hapus->next;
+            }
+
+            free(hapus);
+            printf("\nPenghuni dengan nomor kamar %d berhasil dihapus!\n", nomor);
+        } else {
+            printf("\nGagal menghapus penghuni. Nomor kamar tidak ditemukan!\n");
+        }
     } else {
-        printf("\nKamar tersebut belum dihuni.\n");
+        printf("\nGagal menghapus penghuni. Tidak ada penghuni yang terdaftar!\n");
     }
 }
-/*
-void delLastPenghuni (list* L) {
-    if ((*L).first != NULL) {
-       if (countElement(*L) == 1) {
-            delFirstPenghuni(L);
-       } else {
-           penghuni* last = (*L).first;
-           penghuni* prev;
-
-           while (last->next != NULL) {
-                prev = last;
-                last = last->next;
-           }
-           delAfterPenghuni(prev);
-       }
-    }
-}*/
 
 int idPertama (list L) {
     penghuni* bantu = L.first;
