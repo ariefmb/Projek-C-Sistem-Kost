@@ -305,7 +305,7 @@ void konfirmasiPembayaran(list* L) {
     penghuni* cari = (*L).first;
     int nomor, bayar;
     penghuni* data = (*L).first;
-
+/*
     printf("\n==========DATA PENGHUNI==========\n");
     while (data != NULL && cari->kontainer.sudahBayar == false) {
         printf("\n=================================");
@@ -314,7 +314,8 @@ void konfirmasiPembayaran(list* L) {
         data = data->next;
     }
     printf("\n=================================\n");
-
+*/
+    dataPenghuni(*L);
     printf("\n==========PEMBAYARAN BULANAN==========\n");
     printf("\nMasukkan nomor kamar\t: ");
     scanf("%d", &nomor);
