@@ -6,8 +6,8 @@
 typedef struct {
     int id;
     int nomor;
-    bool sudahBayar; // Field baru untuk status pembayaran
     char namaPenghuni[50];
+    bool sudahBayar; // Field baru untuk status pembayaran
     int biaya;
     int pembayaran;   // Menyimpan data pembayaran
     int kembalian;    // Menyimpan data kembalian
@@ -369,20 +369,28 @@ void cetakStruk(list* L) {
 int main () {
     list L;
     int jumlahKamar, i, pilihan, id = 0;
+    bool dataValid = false;
     createList(&L);
 
     printf("======SELAMAT DATANG======\n");
     printf("==Di Program Sistem Kost==\n");
-    printf("\nMasukkan jumlah kamar: ");
-    scanf("%d", &jumlahKamar);
 
-    while (jumlahKamar < 1) {
-        printf("Tidak memiliki kamar.\n");
-        printf("\nMasukkan kembali jumlah kamar: ");
-        scanf("%d", &jumlahKamar);
+    while (!dataValid) {
+        printf("\nMasukkan jumlah kamar: ");
+        if ((scanf("%d", &jumlahKamar)) != 1) {
+            printf("Input tidak valid.\n");
+            while (getchar() != '\n'); // Membersihkan buffer
+        } else {
+            if (jumlahKamar < 1) {
+                printf("Tidak memiliki kamar.\n");
+            } else {
+                dataValid = true;
+            }
+        }
     }
+
     do {
-        printf("\n\nMenu Pengelolaan Kost:\n");
+        printf("\nMenu Pengelolaan Kost:\n");
         printf("1. Mencari kamar kosong\n");
         printf("2. Menambahkan pesanan kamar\n");
         printf("3. Menghapus pesanan kamar\n");
@@ -400,13 +408,26 @@ int main () {
             case 2: {
                 int nomor, biaya;
                 char namaPenghuni[50];
-                printf("\nMasukkan nomor kamar: ");
-                scanf("%d", &nomor);
-                while (isTerisi(nomor, L)) {
-                    printf("Kamar telah terisi.\n");
+                dataValid = false;
+                while (!dataValid) {
                     printf("\nMasukkan nomor kamar: ");
-                    scanf("%d", &nomor);
+                    if ((scanf("%d", &nomor)) != 1) {
+                        printf("Input tidak valid.\n");
+                        while (getchar() != '\n'); // Membersihkan buffer
+                    } else {
+                        if (nomor < 1 || nomor > jumlahKamar) {
+                            printf("Tidak ada kamar tersebut.\n");;
+                        } else {
+                            if (isTerisi(nomor, L)) {
+                                printf("Kamar telah terisi.\n");
+                            } else {
+                                dataValid = true;
+                            }
+                        }
+                    }
                 }
+                dataValid = false;
+
                 printf("Masukkan nama penghuni: ");
                 fflush(stdin);
                 fgets(namaPenghuni, 50, stdin);
