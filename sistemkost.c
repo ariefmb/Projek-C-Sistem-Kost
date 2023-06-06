@@ -6,7 +6,6 @@
 typedef struct {
     int id;
     int nomor;
-    bool terisi;
     bool sudahBayar; // Field baru untuk status pembayaran
     char namaPenghuni[50];
     int biaya;
@@ -116,7 +115,6 @@ void firstPenghuni (int id, int nomor, char namaPenghuni[], int biaya, list* L) 
 
     baru->kontainer.id = id;
     baru->kontainer.nomor = nomor;
-    baru->kontainer.terisi = true;
     strcpy(baru->kontainer.namaPenghuni, namaPenghuni);
     baru->kontainer.biaya = biaya;
     baru->kontainer.sudahBayar = false;
@@ -138,7 +136,6 @@ void afterPenghuni (penghuni* prev, int id, int nomor, char namaPenghuni[], int 
 
         baru->kontainer.id = id;
         baru->kontainer.nomor = nomor;
-        baru->kontainer.terisi = true;
         strcpy(baru->kontainer.namaPenghuni, namaPenghuni);
         baru->kontainer.biaya = biaya;
         baru->kontainer.sudahBayar = false;
