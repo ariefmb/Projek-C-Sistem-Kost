@@ -406,8 +406,6 @@ int main () {
                         }
                     }
                 }
-                dataValid = false;
-
                 printf("Masukkan nama penghuni: ");
                 fflush(stdin);
                 fgets(namaPenghuni, 50, stdin);
