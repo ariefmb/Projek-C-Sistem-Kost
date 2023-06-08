@@ -196,50 +196,7 @@ void delPenghuni(int nomor, list* L) {
     }
 }
 
-penghuni* idPertama (list L) {
-    penghuni* bantu = L.first;
-    penghuni* after = bantu->next;
-
-    while (after != NULL) {
-        if (after->kontainer.id < bantu->kontainer.id) {
-            bantu = after;
-        }
-        after = after->next;
-    }
-    return bantu;
-}
-
-void selectionSortId (list* L) {
-    penghuni* sorted = NULL;
-    penghuni* bantu = (*L).first;
-
-    while (bantu != NULL) {
-        penghuni* pertama = idPertama(*L);
-        if (pertama == bantu) {
-            bantu = bantu->next;
-            (*L).first = bantu;
-        } else {
-            penghuni* prev = bantu;
-            while (prev->next != pertama) {
-                prev = prev->next;
-            }
-            prev->next = pertama->next;
-        }
-        pertama->next = NULL;
-        if (sorted == NULL) {
-            sorted = pertama;
-        } else {
-            penghuni* terakhir = sorted;
-            while (terakhir->next != NULL) {
-                terakhir = terakhir->next;
-            }
-            terakhir->next = pertama;
-        }
-    }
-    (*L).first = sorted;
-}
-
-penghuni* kamarPertama (list L) {
+penghuni* Pertama (list L) {
     penghuni* bantu = L.first;
     penghuni* after = bantu->next;
 
@@ -252,12 +209,12 @@ penghuni* kamarPertama (list L) {
     return bantu;
 }
 
-void selectionSortKamar (list* L) {
+void selectionSort (list* L) {
     penghuni* sorted = NULL;
     penghuni* bantu = (*L).first;
 
     while (bantu != NULL) {
-        penghuni* pertama = kamarPertama(*L);
+        penghuni* pertama = Pertama(*L);
         if (pertama == bantu) {
             bantu = bantu->next;
             (*L).first = bantu;
@@ -288,8 +245,8 @@ void dataPenghuni (list L) {
         penghuni* bantu = L.first;
         while (bantu != NULL) {
             printf("\n=================================");
-            printf("\nKamar %d || Penghuni: %s", bantu->kontainer.nomor, bantu->kontainer.namaPenghuni);
-            printf("\n\t|| Biaya: Rp %d", bantu->kontainer.biaya);
+            printf("\nKamar %02d || Penghuni: %s", bantu->kontainer.nomor, bantu->kontainer.namaPenghuni);
+            printf("\n\t || Biaya: Rp %d", bantu->kontainer.biaya);
             bantu = bantu->next;
         }
     } else {
@@ -307,8 +264,8 @@ void konfirmasiPembayaran(list* L) {
     while (data != NULL) {
         if (data->kontainer.sudahBayar == false) {
             printf("\n=================================");
-            printf("\nKamar %d || Penghuni: %s", data->kontainer.nomor, data->kontainer.namaPenghuni);
-            printf("\n\t|| Biaya: Rp %d", data->kontainer.biaya);
+            printf("\nKamar %02d || Penghuni: %s", data->kontainer.nomor, data->kontainer.namaPenghuni);
+            printf("\n\t || Biaya: Rp %d", data->kontainer.biaya);
         }
         data = data->next;
     }
@@ -353,10 +310,12 @@ void cetakStruk(list* L) {
             if (bantu->kontainer.sudahBayar) {
                 printf("\n====================================");
                 printf("\nNomor Struk : KOST/%02d/2023", bantu->kontainer.nomor);
-                printf("\nKamar %d || Penghuni\t: %s", bantu->kontainer.nomor, bantu->kontainer.namaPenghuni);
-                printf("\n\t|| Biaya\t: Rp %d", bantu->kontainer.biaya);
-                printf("\n\t|| Pembayaran\t: Rp %d", bantu->kontainer.pembayaran);   // Menampilkan data pembayaran
-                printf("\n\t|| Kembalian\t: Rp %d", bantu->kontainer.kembalian);     // Menampilkan data kembalian
+                printf("\nKamar %02d || Penghuni\t: %s", bantu->kontainer.nomor, bantu->kontainer.namaPenghuni);
+                printf("\n\t || Biaya\t: Rp %d", bantu->kontainer.biaya);
+                printf("\n\t || Pembayaran\t: Rp %d", bantu->kontainer.pembayaran);   // Menampilkan data pembayaran
+                printf("\n\t || Kembalian\t: Rp %d", bantu->kontainer.kembalian);     // Menampilkan data kembalian
+            } else if (bantu->next == NULL && bantu->kontainer.sudahBayar == false) {
+                printf("\nBelum ada yang membayar.\n");
             }
             bantu = bantu->next;
         }
@@ -450,15 +409,14 @@ int main () {
                 break;
             }
             case 4:
-                selectionSortId(&L);
+                selectionSort(&L);
                 konfirmasiPembayaran(&L);
                 break;
             case 5:
-                //selectionSortId(&L);
                 cetakStruk(&L);
                 break;
             case 6:
-                selectionSortKamar(&L);
+                selectionSort(&L);
                 dataPenghuni(L);
                 break;
             case 0:
