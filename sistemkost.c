@@ -130,8 +130,8 @@ void afterPenghuni (penghuni* prev, int nomor, char namaPenghuni[], int biaya) {
 
         prev->next = baru;
         baru = NULL;
-        printf("Pesanan kamar berhasil ditambahkan.\n");
     }
+    printf("Pesanan kamar berhasil ditambahkan.\n");
 }
 
 void addPenghuni (int nomor, char namaPenghuni[], int biaya, list* L) {
@@ -147,7 +147,7 @@ void addPenghuni (int nomor, char namaPenghuni[], int biaya, list* L) {
 }
 
 void delPenghuni(int nomor, list* L) {
-    char pilihan[2];
+    char pilihan;
     if ((*L).first != NULL) {
         penghuni* hapus = (*L).first;
         penghuni* prev = NULL;
@@ -163,78 +163,37 @@ void delPenghuni(int nomor, list* L) {
         }
 
         if (found) {
-            if (prev == NULL) {
-                (*L).first = hapus->next;
-            } else {
-                prev->next = hapus->next;
-            }
             while (found) {
-                printf("\nPenghuni kamar %d", hapus->kontainer.nomor);
+                printf("\n=================================");
+                printf("\nKamar %02d || Penghuni: %s", hapus->kontainer.nomor, hapus->kontainer.namaPenghuni);
+                printf("\n\t || Biaya: Rp %d", hapus->kontainer.biaya);
+                printf("\n=================================");
                 printf("\n<!> Apakah Anda yakin ingin menghapus? <!>");
                 printf("\n(y/n): ");
-                getchar();
-                fgets(pilihan, 2, stdin);
-                pilihan[strcspn(pilihan, "\n")] = '\0';
-                if (pilihan == "y"){
+                fflush(stdin);
+                scanf("%c", &pilihan);
+                if (pilihan == 'y'){
+                    if (prev == NULL) {
+                        (*L).first = hapus->next;
+                    } else {
+                        prev->next = hapus->next;
+                    }
                     free(hapus);
                     printf("\n<!> Penghuni kamar %d berhasil dihapus <!>\n", nomor);
                     break;
-                } else if (pilihan == "n") {
+                } else if (pilihan == 'n') {
                     printf("\n<!> Penghuni kamar %d batal dihapus <!>\n", nomor);
                     break;
                 } else {
-                    printf("\nInput tidak valid.\n");
+                    printf("Input tidak valid.\n");
                 }
             }
         } else {
             printf("\nGagal menghapus penghuni. \nNomor kamar tidak ditemukan.\n");
         }
     } else {
-        printf("\nGagal menghapus penghuni. \nBelum ada penghuni.\n");
+        printf("Belum ada penghuni.\n");
     }
-}
-
-penghuni* idPertama (list L) {
-    penghuni* bantu = L.first;
-    penghuni* after = bantu->next;
-
-    while (after != NULL) {
-        if (after->kontainer.id < bantu->kontainer.id) {
-            bantu = after;
-        }
-        after = after->next;
-    }
-    return bantu;
-}
-
-void selectionSortId (list* L) {
-    penghuni* sorted = NULL;
-    penghuni* bantu = (*L).first;
-
-    while (bantu != NULL) {
-        penghuni* pertama = idPertama(*L);
-        if (pertama == bantu) {
-            bantu = bantu->next;
-            (*L).first = bantu;
-        } else {
-            penghuni* prev = bantu;
-            while (prev->next != pertama) {
-                prev = prev->next;
-            }
-            prev->next = pertama->next;
-        }
-        pertama->next = NULL;
-        if (sorted == NULL) {
-            sorted = pertama;
-        } else {
-            penghuni* terakhir = sorted;
-            while (terakhir->next != NULL) {
-                terakhir = terakhir->next;
-            }
-            terakhir->next = pertama;
-        }
-    }
-    (*L).first = sorted;
 }
 
 penghuni* kamarPertama (list L) {
@@ -250,7 +209,7 @@ penghuni* kamarPertama (list L) {
     return bantu;
 }
 
-void selectionSortKamar (list* L) {
+void selectionSort (list* L) {
     penghuni* sorted = NULL;
     penghuni* bantu = (*L).first;
 
@@ -294,7 +253,7 @@ void penagihanPembayaran(list* L) {
         }
         data = data->next;
     }
-    printf("\n=================================\n");
+    printf("\n================================\n");
 
     printf("\n==========PEMBAYARAN BULANAN==========\n");
     printf("\nMasukkan nomor kamar\t: ");
@@ -303,6 +262,8 @@ void penagihanPembayaran(list* L) {
         if (cari->kontainer.nomor == nomor) {
             if (cari->kontainer.sudahBayar == true) {
                 printf("Kamar nomor %d sudah membayar.\n", cari->kontainer.nomor);
+                printf("======================================\n");
+                return;
             } else {
                 printf("Masukkan jumlah pembayaran: ");
                 scanf("%d", &cari->kontainer.pembayaran);   // Menyimpan data pembayaran
@@ -387,12 +348,12 @@ void dataPenghuni (list L) {
 
 int main () {
     list L;
-    int jumlahKamar, i, pilihan, id = 0;
+    int jumlahKamar, i, pilihan;
     bool dataValid = false;
     createList(&L);
 
-    printf("======SELAMAT DATANG======\n");
-    printf("==Di Program Sistem Kost==\n");
+    printf("\n======== SELAMAT DATANG ========\n");
+    printf("==== Di Program Sistem Kost ====\n");
 
     while (!dataValid) {
         printf("\nMasukkan jumlah kamar: ");
@@ -468,15 +429,14 @@ int main () {
                 break;
             }
             case 4:
-                selectionSortKamar(&L);
+                selectionSort(&L);
                 penagihanPembayaran(&L);
                 break;
             case 5:
-                selectionSortId(&L);
                 laporanPembayaran(&L);
                 break;
             case 6:
-                selectionSortKamar(&L);
+                selectionSort(&L);
                 dataPenghuni(L);
                 break;
             case 0:
@@ -487,6 +447,5 @@ int main () {
                 break;
         }
     } while (pilihan != 0);
-
     return 0;
 }
